@@ -1,6 +1,6 @@
-import { setScreen, game } from "./game/screenSetup.js";
+import { setScreen, startGame } from "./game/screenSetup.js";
 
 setScreen();
-game();
+startGame();
 
 

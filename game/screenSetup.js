@@ -51,10 +51,8 @@ function clearScreen() {
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-export function game() {
-    clearScreen();
-    console.log("game loop");
+export function startGame() {
+    clearScreen();;
     cat.draw()
-
-    requestAnimationFrame(game);
+    requestAnimationFrame(startGame);
 }
