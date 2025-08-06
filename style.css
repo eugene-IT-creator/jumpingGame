@@ -1,0 +1,48 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-image: url("./images/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#character {
+    position: relative;
+}
+#character img {
+    position: absolute;
+    width: 500px;
+    top: 350px;
+}
+
+.animate {
+    animation: jump 500ms infinite;
+}
+
+#block {
+    position: relative;
+    top: 600px;
+    left: 800px;
+    animation: block 1.3s infinite linear;
+
+}
+
+#block img {
+    width: 130px;
+    height: 130px;
+    position: relative;
+}
+
+@keyframes block {
+    0%{left: 800px;}
+    100%{left: -120px;}
+
+}
+@keyframes jump{
+    0%{bottom: 200px;}
+    50%{bottom: 300px;}
+    100%{bottom: 200px;}
+}
