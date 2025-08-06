@@ -1,17 +1,27 @@
 import { getBy } from "../helpers.js";
 import Cat from "./Cat.js";
+import Table from "./Table.js";
 
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
+const FRAME_TIME = 16.67;
+const GAME_SPEED_INITIAL = 0.75;
+const SPEED_INCREMENT = 0.00001;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 200;
 const CAT_WIDTH = 88 / 1.5;
 const CAT_HEIGHT = 94 / 1.5;
 const MAX_JUMP_HEIGHT = GAME_HEIGHT;
 const MIN_JUMP_HEIGHT = 140;
+const TABLE_WIDTH = 2400;
+const TABLE_HEIGHT = 24;
+const OBSTACLE_SPEED = 0.5;
 
-let cat;
-let scaleRatio;
+let cat = null;
+let scaleRatio = null;
+let table = null;
+let previousTime = null;
+let gameSpeed = GAME_SPEED_INITIAL;
 
 function setScreenDimensions() {
     scaleRatio = getScaleRation();
@@ -20,12 +30,16 @@ function setScreenDimensions() {
 }
 
 function createElements() {
-    const scaledCatHeight = CAT_HEIGHT * scaleRatio;
-    const scaledCatWidth = CAT_WIDTH * scaleRatio;
-    const scaledMinJumpHeight = MIN_JUMP_HEIGHT * scaleRatio;
-    const scaledMaxJumpHeight = MAX_JUMP_HEIGHT * scaleRatio;
+    let scaledCatHeight = CAT_HEIGHT * scaleRatio;
+    let scaledCatWidth = CAT_WIDTH * scaleRatio;
+    let scaledMinJumpHeight = MIN_JUMP_HEIGHT * scaleRatio;
+    let scaledMaxJumpHeight = MAX_JUMP_HEIGHT * scaleRatio;
+    let scaledTableHeight = TABLE_HEIGHT * scaleRatio;
+    let scaledTableWidth = TABLE_WIDTH * scaleRatio;
 
-    cat = new Cat(context, scaledCatHeight, scaledCatWidth, scaledMinJumpHeight, scaledMaxJumpHeight, scaleRatio)
+    cat = new Cat(context, scaledCatHeight, scaledCatWidth, scaledMinJumpHeight, scaledMaxJumpHeight, scaleRatio);
+
+    table = new Table(context, scaledTableHeight, scaledTableWidth, OBSTACLE_SPEED, scaleRatio);
 }
 
 export function setScreen() {
@@ -36,8 +50,8 @@ export function setScreen() {
 
 
 function getScaleRation() {
-    const screenHeight = window.innerHeight;
-    const screenWidth = window.innerWidth;
+    let screenHeight = window.innerHeight;
+    let screenWidth = window.innerWidth;
 
     if ((screenWidth / screenHeight) < (GAME_WIDTH / GAME_HEIGHT)) {
         return screenWidth / GAME_WIDTH;
@@ -52,7 +66,11 @@ function clearScreen() {
 }
 
 export function startGame() {
-    clearScreen();;
-    cat.draw()
+    clearScreen();
+
+    table.update(gameSpeed, FRAME_TIME);
+
+    table.draw();
+    cat.draw();
     requestAnimationFrame(startGame);
 }
