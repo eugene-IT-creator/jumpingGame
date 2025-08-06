@@ -78,7 +78,7 @@ body {
 
 
 .modal {
-    display: none;
+    /*display: none;*/
     width: 300px;
     height: 350px;
     position: relative;
