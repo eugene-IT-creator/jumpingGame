@@ -3,7 +3,7 @@ export default class Cat {
     jumping = false;
     falling = false;
     JUMP_SPEED = 0.6;
-    GRAVITY = 0.4;
+    GRAVITY = 0.3;
     constructor(context, height, width, minJumpHeight, maxJumpHeight, scaleRatio) {
         this.context = context;
         this.canvas = context.canvas;
@@ -14,8 +14,8 @@ export default class Cat {
         this.scaleRatio = scaleRatio;
 
         this.x = 10 * scaleRatio;
-        this.y = this.canvas.height - this.height - (1.5 * scaleRatio);
-        this.yInitial = this.y;
+        this.y = this.canvas.height - this.height - 1.5 * scaleRatio;
+        this.yInitial = this.y; 
         this.image = new Image();
         this.image.src = "../images/meme-cat.png";
 
@@ -38,24 +38,24 @@ export default class Cat {
         }
     }
 
-    update(frameTimeDelta) {
-        this.jump(frameTimeDelta)
+    update(frameTime) {
+        this.jump(frameTime)
     }
 
-    jump(frameTimeDelta) {
+    jump(frameTime) {
         if (this.jumpPressed) {
             this.jumping = true;
         }
 
         if (this.jumping && !this.falling) {
-            if (this.y > this.canvas.height - this.minJumpHeight || this.y > this.canvas.height - this.maxJumpHeight && this.jump) {
-                this.y -= this.JUMP_SPEED * frameTimeDelta * this.scaleRatio;
+            if (this.y > this.canvas.height - this.minJumpHeight || this.y > this.canvas.height - this.maxJumpHeight && this.jumpPressed) {
+                this.y -= this.JUMP_SPEED * frameTime * this.scaleRatio;
             } else {
                 this.falling = true;
             }
         } else {
             if (this.y < this.yInitial) {
-                this.y += this.GRAVITY * frameTimeDelta * this.scaleRatio;
+                this.y += this.GRAVITY * frameTime * this.scaleRatio;
                 if (this.y + this.height > this.canvas.height) {
                     this.y = this.yInitial;
                 }
@@ -65,7 +65,6 @@ export default class Cat {
             }
         }
     }
-
     draw() {
         this.context.drawImage(this.image, this.x, this.y, this.width, this.height)
     }

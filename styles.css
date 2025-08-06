@@ -2,13 +2,11 @@
     padding: 0px;
     margin: 0px;
 }
-
 canvas {
-    border: 2px;
+    border: 4px;
     border-style: solid;
-    border-color: blue;
+    border-color: burlywood;
 }
-
 body {
     display: flex;
     justify-content: center;

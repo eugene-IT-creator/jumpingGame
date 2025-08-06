@@ -20,7 +20,6 @@ const OBSTACLE_SPEED = 0.5;
 let cat = null;
 let scaleRatio = null;
 let table = null;
-let previousTime = null;
 let gameSpeed = GAME_SPEED_INITIAL;
 
 function setScreenDimensions() {
