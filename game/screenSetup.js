@@ -69,6 +69,7 @@ export function startGame() {
     clearScreen();
 
     table.update(gameSpeed, FRAME_TIME);
+    cat.update(FRAME_TIME);
 
     table.draw();
     cat.draw();

@@ -23,7 +23,6 @@ export default class Table {
     }
 
     update(gameSpeed, frameTimeDelta) {
-        console.log(frameTimeDelta);
         this.x -= (gameSpeed * frameTimeDelta) * this.speed * this.scaleRatio;
 
 
