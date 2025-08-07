@@ -1,7 +1,7 @@
 import Obstacle from "./Obstacle.js";
 export default class ObstacleController {
-    OBSTACLE_INTERVAL_MIN = 500;
-    OBSTACLE_INTERVAL_MAX = 2000;
+    OBSTACLE_INTERVAL_MIN = 800;
+    OBSTACLE_INTERVAL_MAX = 2500;
 
     nextObstacleInterval = null;
     obstacles = [];
@@ -39,11 +39,14 @@ export default class ObstacleController {
         }
 
         this.nextObstacleInterval -= frameTime;
-        console.log(this.obstacles.length);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.update(this.speed, gameSpeed, frameTime, this.scaleRatio);
         })
+
+        this.obstacles = this.obstacles.filter((obstacle) => obstacle.x > -obstacle.width);
+        console.log(this.obstacles.length);
+
         
     }
 
