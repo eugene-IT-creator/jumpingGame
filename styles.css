@@ -1,11 +1,9 @@
 * {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 canvas {
-    border: 4px;
-    border-style: solid;
-    border-color: burlywood;
+    border: 4px solid burlywood;
 }
 body {
     display: flex;

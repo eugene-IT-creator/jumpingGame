@@ -26,4 +26,8 @@ export default class Table {
         //ensure it is moving at the same speed regardless of display size
         this.x -= gameSpeed * frameTime * this.speed * this.scaleRatio;
     }
+
+    reset() {
+        this.x = 0;
+    }
 }

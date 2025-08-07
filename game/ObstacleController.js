@@ -37,22 +37,26 @@ export default class ObstacleController {
             this.spawnObstacle();
             this.setNextObstacleTime();
         }
-
         this.nextObstacleInterval -= frameTime;
-
         this.obstacles.forEach((obstacle) => {
             obstacle.update(this.speed, gameSpeed, frameTime, this.scaleRatio);
         })
 
         this.obstacles = this.obstacles.filter((obstacle) => obstacle.x > -obstacle.width);
         console.log(this.obstacles.length);
-
-        
     }
 
     draw() {
         this.obstacles.forEach((obstacle) => {
             obstacle.draw();
         })
+    }
+
+    collideWith(sprite) {
+        return this.obstacles.some((obstacle) => obstacle.collideWith(sprite));
+    }
+
+    reset() {
+        this.obstacles = [];
     }
 }

@@ -2,6 +2,7 @@ import { getBy } from "../helpers.js";
 import Cat from "./Cat.js";
 import Table from "./Table.js";
 import ObstacleController from "./ObstacleController.js";
+import Score from "./Score.js";
 
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
@@ -28,6 +29,12 @@ let scaleRatio = null;
 let table = null;
 let obstacleController = null;
 let gameSpeed = GAME_SPEED_INITIAL;
+let score = null;
+
+let previousTime = null;
+let gameOver = false;
+let hasAddedEventListenersForRestart = false;
+let waitingToStart = true;
 
 function setScreenDimensions() {
     scaleRatio = getScaleRation();
@@ -95,3 +102,94 @@ export function startGame() {
     cat.draw();
     requestAnimationFrame(startGame);
 }
+
+export function showGameOver() {
+    const fontSize = 70 * scaleRatio;
+    context.font = `${fontSize}px Verdana`;
+    context.fillStyle = "black";
+    const x = canvas.width / 4.5;
+    const y = canvas.height / 2;
+    context.fillText("GAME OVER", x, y);
+}
+
+export function setupGameReset() {
+    if (!hasAddedEventListenersForRestart) {
+        hasAddedEventListenersForRestart = true;
+
+        setTimeout(() => {
+            window.addEventListener("keyup", reset, { once: true });
+            window.addEventListener("touchstart", reset, { once: true });
+        }, 1000);
+    }
+}
+
+function reset() {
+    hasAddedEventListenersForRestart = false;
+    gameOver = false;
+    waitingToStart = false;
+    table.reset();
+    obstacleController.reset();
+    score.reset();
+    gameSpeed = GAME_SPEED_INITIAL;
+}
+
+export function showStartGameText() {
+    const fontSize = 40 * scaleRatio;
+    context.font = `${fontSize}px Verdana`;
+    context.fillStyle = "black";
+    const x = canvas.width / 14;
+    const y = canvas.height / 2;
+    context.fillText("Tap Screen or Press Space To Start", x, y);
+}
+
+export function updateGameSpeed(frameTimeDelta) {
+    gameSpeed += frameTimeDelta * SPEED_INCREMENT;
+}
+
+export function gameLoop(currentTime) {
+    if (previousTime === null) {
+        previousTime = currentTime;
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+    const frameTimeDelta = currentTime - previousTime;
+    previousTime = currentTime;
+
+    clearScreen();
+
+    if (!gameOver && !waitingToStart) {
+        //Update game objects
+        table.update(gameSpeed, frameTimeDelta);
+        obstacleController.update(gameSpeed, frameTimeDelta);
+        cat.update(gameSpeed, frameTimeDelta);
+        score.update(frameTimeDelta);
+        updateGameSpeed(frameTimeDelta);
+    }
+
+    if (!gameOver && obstacleController.collideWith(cat)) {
+        gameOver = true;
+        setupGameReset();
+        score.setHighScore();
+    }
+
+    //Draw game objects
+    table.draw();
+    obstacleController.draw();
+    cat.draw();
+    score.draw();
+
+    if (gameOver) {
+        showGameOver();
+    }
+
+    if (waitingToStart) {
+        showStartGameText();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+requestAnimationFrame(gameLoop);
+
+window.addEventListener("keyup", reset, { once: true });
+window.addEventListener("touchstart", reset, { once: true });
