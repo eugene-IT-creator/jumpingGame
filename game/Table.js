@@ -16,15 +16,14 @@ export default class Table {
 
     draw() {
         this.context.drawImage(this.tableImage, this.x, this.y, this.width, this.height);
-        //ensure the table keeps being drawn
+        //ensure the table keeps being drawn as it moves into negative x
         this.context.drawImage(this.tableImage, this.x + this.width, this.y, this.width, this.height);
 
-        this.x < -this.width ? this.x = 0 : '';
+        if (this.x < -this.width)  this.x = 0;
     }
 
-    update(gameSpeed, frameTimeDelta) {
-        this.x -= (gameSpeed * frameTimeDelta) * this.speed * this.scaleRatio;
-
-
+    update(gameSpeed, frameTime) {
+        //ensure it is moving at the same speed regardless of display size
+        this.x -= gameSpeed * frameTime * this.speed * this.scaleRatio;
     }
 }

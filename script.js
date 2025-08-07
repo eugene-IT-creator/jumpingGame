@@ -1,4 +1,4 @@
-import { setScreen, startGame } from "./game/screenSetup.js";
+import { setScreen, startGame } from "./game/mainGame.js";
 
 setScreen();
 

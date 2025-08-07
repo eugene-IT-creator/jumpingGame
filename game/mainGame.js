@@ -1,6 +1,7 @@
 import { getBy } from "../helpers.js";
 import Cat from "./Cat.js";
 import Table from "./Table.js";
+import ObstacleController from "./ObstacleController.js";
 
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
@@ -12,15 +13,20 @@ const GAME_HEIGHT = 200;
 const CAT_WIDTH = 88 / 1.5;
 const CAT_HEIGHT = 94 / 1.5;
 const MAX_JUMP_HEIGHT = GAME_HEIGHT;
-const MIN_JUMP_HEIGHT = 140;
+const MIN_JUMP_HEIGHT = 150;
 const TABLE_WIDTH = 2400;
 const TABLE_HEIGHT = 24;
 const OBSTACLE_SPEED = 0.5;
+const OBSTACLES = [
+    { width: 55 / 1.5, height: 70 / 1.5, image: "../images/glass.png" },
+    { width: 150 / 1.5, height: 100 / 1.5, image: "../images/laptop.png" },
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/laptop2.png" }
+]
 
 let cat = null;
 let scaleRatio = null;
 let table = null;
-let previousTime = null;
+let obstacleController = null;
 let gameSpeed = GAME_SPEED_INITIAL;
 
 function setScreenDimensions() {
@@ -40,6 +46,18 @@ function createElements() {
     cat = new Cat(context, scaledCatHeight, scaledCatWidth, scaledMinJumpHeight, scaledMaxJumpHeight, scaleRatio);
 
     table = new Table(context, scaledTableHeight, scaledTableWidth, OBSTACLE_SPEED, scaleRatio);
+
+    const obstacleImages = OBSTACLES.map(obstacle => {
+        const image = new Image();
+        image.src = obstacle.image;
+        return {
+            image: image,
+            width: obstacle.width * scaleRatio,
+            height: obstacle.height * scaleRatio
+        }
+    });
+
+    obstacleController = new ObstacleController(context, obstacleImages, scaleRatio, OBSTACLE_SPEED);
 }
 
 export function setScreen() {
@@ -69,9 +87,11 @@ export function startGame() {
     clearScreen();
 
     table.update(gameSpeed, FRAME_TIME);
+    obstacleController.update(gameSpeed, FRAME_TIME);
     cat.update(FRAME_TIME);
 
     table.draw();
+    obstacleController.draw();
     cat.draw();
     requestAnimationFrame(startGame);
 }
