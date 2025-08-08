@@ -25,18 +25,18 @@ export default class Score {
 
     draw() {
         const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
-        const y = 20 * this.scaleRatio;
+        const y = 25 * this.scaleRatio;
 
         const fontSize = 20 * this.scaleRatio;
-        this.context.font = `${fontSize}px serif`;
-        this.context.fillStyle = "#800723";
+        this.context.font = `${fontSize}px Calibri`;
+        this.context.fillStyle = "#fb8500";
         const scoreX = this.canvas.width - 75 * this.scaleRatio;
-        const highScoreX = scoreX - 125 * this.scaleRatio;
+        const highScoreX = scoreX - 180 * this.scaleRatio;
 
         const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
         const highScorePadded = highScore.toString().padStart(6, 0);
 
         this.context.fillText(scorePadded, scoreX, y);
-        this.context.fillText(`Score: ${highScorePadded}`, highScoreX, y);
+        this.context.fillText(`High Score: ${highScorePadded}`, highScoreX, y);
     }
 }
