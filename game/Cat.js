@@ -2,8 +2,8 @@ export default class Cat {
     jumpPressed = false;
     jumping = false;
     falling = false;
-    JUMP_SPEED = 0.65;
-    GRAVITY = 0.4;
+    JUMP_SPEED = 16.25; 
+    GRAVITY = 7.5;
     constructor(context, height, width, minJumpHeight, maxJumpHeight, scaleRatio) {
         this.context = context;
         this.canvas = context.canvas;

@@ -2,13 +2,13 @@ import { getBy } from "../helpers.js";
 import Cat from "./Cat.js";
 import Table from "./Table.js";
 import ObstacleController from "./ObstacleController.js";
-//import Score from "./Score.js";
+import Score from "./Score.js";
 
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
 const FRAME_TIME = 16.67;
-const GAME_SPEED_INITIAL = 0.75;
-const SPEED_INCREMENT = 0.00001;
+const GAME_SPEED_INITIAL = 1;
+const SPEED_INCREMENT = 0.00002;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 200;
 const CAT_WIDTH = 88 / 1.5;
@@ -36,7 +36,7 @@ let hasAddedEventListenersForRestart = false;
 let waitingToStart = true;
 
 function setScreenDimensions() {
-    scaleRatio = getScaleRation();
+    scaleRatio = getScaleRatio();
     canvas.height = GAME_HEIGHT * scaleRatio;
     canvas.width = GAME_WIDTH * scaleRatio;
 }
@@ -73,7 +73,7 @@ export function setScreen() {
 }
 
 
-function getScaleRation() {
+function getScaleRatio() {
     let screenHeight = window.innerHeight;
     let screenWidth = window.innerWidth;
 
@@ -82,11 +82,6 @@ function getScaleRation() {
     } else {
         return screenHeight / GAME_HEIGHT;
     }
-}
-
-function clearScreen() {
-    context.fillStyle = "white";
-    context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function showGameOver() {
@@ -109,7 +104,7 @@ function setupGameReset() {
     }
 }
 
-function reset() {
+export function reset() {
     hasAddedEventListenersForRestart = false;
     gameOver = false;
     waitingToStart = false;
@@ -132,7 +127,14 @@ function updateGameSpeed(FRAME_TIME) {
     gameSpeed += FRAME_TIME * SPEED_INCREMENT;
 }
 
+function clearScreen() {
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+
 export function startGame() {
+    console.log(gameSpeed);
     
     clearScreen();
     if (!gameOver && !waitingToStart) {
@@ -140,13 +142,13 @@ export function startGame() {
         obstacleController.update(gameSpeed, FRAME_TIME);
         cat.update(gameSpeed, FRAME_TIME);
         //score.update(FRAME_TIME);
-        //updateGameSpeed(FRAME_TIME);
+        updateGameSpeed(FRAME_TIME);
     }
 
     if (!gameOver && obstacleController.collideWith(cat)) {
         gameOver = true;
         setupGameReset();
-        score.setHighScore();
+        //score.setHighScore();
     }
 
     table.draw();
@@ -164,35 +166,3 @@ export function startGame() {
     requestAnimationFrame(startGame);
 }
 
-
-
-// export function gameLoop(currentTime) {
-//     if (previousTime === null) {
-//         previousTime = currentTime;
-//         requestAnimationFrame(gameLoop);
-//         return;
-//     }
-//     const frameTimeDelta = currentTime - previousTime;
-//     previousTime = currentTime;
-
-//     clearScreen();
-
-
-
-
-
-//     //Draw game objects
-//     table.draw();
-//     obstacleController.draw();
-//     cat.draw();
-//     score.draw();
-
-
-
-//     requestAnimationFrame(gameLoop);
-// }
-
-// requestAnimationFrame(gameLoop);
-
-window.addEventListener("keyup", reset, { once: true });
-window.addEventListener("touchstart", reset, { once: true });
