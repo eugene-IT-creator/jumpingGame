@@ -11,7 +11,7 @@ export default class Table {
         this.y = this.canvas.height - this.height;
 
         this.tableImage = new Image();
-        this.tableImage.src = "../images/table.png"
+        this.tableImage.src = "images/table.png"
     }
 
     draw() {
