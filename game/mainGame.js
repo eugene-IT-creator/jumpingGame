@@ -123,7 +123,7 @@ function showStartGameText() {
     context.fillStyle = "#035365";
     const x = canvas.width / 14;
     const y = canvas.height / 2;
-    context.fillText("Isn't Branco in the room? Tap Screen or press Space to start!", x, y);
+    context.fillText("Isn't Branko in the room? Tap Screen or press Space to start!", x, y);
 }
 
 function updateGameSpeed(FRAME_TIME) {
