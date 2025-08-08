@@ -95,12 +95,10 @@ function showGameOver() {
     const y = canvas.height / 3;
     const lineheight = fontSize;
 
-    const gameOverText = "DEVICE DESTROYED! RUN AWAY!\n\nOr tap Screen or press Start to destroy more".split("\n");
-    for (var j = 0; j < gameOverText.length; j++) {
-        context.fillText(gameOverText[j], x, y + (j * lineheight));
+    const gameOverText = "DEVICE DESTROYED! RUN AWAY!\n\nOr tap screen / press Space to destroy more".split("\n");
+    for (var i = 0; i < gameOverText.length; i++) {
+        context.fillText(gameOverText[i], x, y + (i * lineheight));
     }
-
-    ;
 }
 
 function setupGameReset() {
