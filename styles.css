@@ -3,7 +3,8 @@
     margin: 0;
 }
 canvas {
-    border: 4px solid burlywood;
+    /* box-sizing: border-box; */
+    /* border: 4px solid burlywood; */
     opacity: 0.9;
 }
 body {
