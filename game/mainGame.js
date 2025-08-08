@@ -7,7 +7,7 @@ import Score from "./Score.js";
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
 const FRAME_TIME = 16.67;
-const GAME_SPEED_INITIAL = 1;
+const GAME_SPEED_INITIAL = 0.9;
 const SPEED_INCREMENT = 0.00002;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 200;
