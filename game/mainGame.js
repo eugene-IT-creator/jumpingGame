@@ -90,10 +90,7 @@ function getScaleRatio() {
 function showGameOver() {
     const fontSize = 45 * scaleRatio;
     context.font = `${fontSize}px Calibri`;
-    context.fillStyle = "#035365";
-    const x = canvas.width / 6;
-    const y = canvas.height / 2;
-    context.fillText("DEVICE DESTROYED! Run away!", x, y);
+    context.fillStyle = "#219ebc";
 }
 
 function setupGameReset() {
@@ -120,7 +117,7 @@ export function reset() {
 function showStartGameText() {
     const fontSize = 28 * scaleRatio;
     context.font = `${fontSize}px Calibri`;
-    context.fillStyle = "#035365";
+    context.fillStyle = "#219ebc";
     const x = canvas.width / 14;
     const y = canvas.height / 2;
     context.fillText("Isn't Branko in the room? Tap Screen or press Space to start!", x, y);
