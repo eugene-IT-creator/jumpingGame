@@ -31,7 +31,6 @@ let obstacleController = null;
 let gameSpeed = GAME_SPEED_INITIAL;
 let score = null;
 
-let previousTime = null;
 let gameOver = false;
 let hasAddedEventListenersForRestart = false;
 let waitingToStart = true;
@@ -90,20 +89,7 @@ function clearScreen() {
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-export function startGame() {
-    clearScreen();
-
-    table.update(gameSpeed, FRAME_TIME);
-    obstacleController.update(gameSpeed, FRAME_TIME);
-    cat.update(FRAME_TIME);
-
-    table.draw();
-    obstacleController.draw();
-    cat.draw();
-    requestAnimationFrame(startGame);
-}
-
-export function showGameOver() {
+function showGameOver() {
     const fontSize = 70 * scaleRatio;
     context.font = `${fontSize}px Verdana`;
     context.fillStyle = "black";
@@ -112,7 +98,7 @@ export function showGameOver() {
     context.fillText("GAME OVER", x, y);
 }
 
-export function setupGameReset() {
+function setupGameReset() {
     if (!hasAddedEventListenersForRestart) {
         hasAddedEventListenersForRestart = true;
 
@@ -129,11 +115,11 @@ function reset() {
     waitingToStart = false;
     table.reset();
     obstacleController.reset();
-    score.reset();
+    //score.reset();
     gameSpeed = GAME_SPEED_INITIAL;
 }
 
-export function showStartGameText() {
+function showStartGameText() {
     const fontSize = 40 * scaleRatio;
     context.font = `${fontSize}px Verdana`;
     context.fillStyle = "black";
@@ -142,28 +128,19 @@ export function showStartGameText() {
     context.fillText("Tap Screen or Press Space To Start", x, y);
 }
 
-export function updateGameSpeed(frameTimeDelta) {
-    gameSpeed += frameTimeDelta * SPEED_INCREMENT;
+function updateGameSpeed(FRAME_TIME) {
+    gameSpeed += FRAME_TIME * SPEED_INCREMENT;
 }
 
-export function gameLoop(currentTime) {
-    if (previousTime === null) {
-        previousTime = currentTime;
-        requestAnimationFrame(gameLoop);
-        return;
-    }
-    const frameTimeDelta = currentTime - previousTime;
-    previousTime = currentTime;
-
+export function startGame() {
     clearScreen();
 
     if (!gameOver && !waitingToStart) {
-        //Update game objects
-        table.update(gameSpeed, frameTimeDelta);
-        obstacleController.update(gameSpeed, frameTimeDelta);
-        cat.update(gameSpeed, frameTimeDelta);
-        score.update(frameTimeDelta);
-        updateGameSpeed(frameTimeDelta);
+        table.update(gameSpeed, FRAME_TIME);
+        obstacleController.update(gameSpeed, FRAME_TIME);
+        cat.update(gameSpeed, FRAME_TIME);
+        //score.update(FRAME_TIME);
+        updateGameSpeed(FRAME_TIME);
     }
 
     if (!gameOver && obstacleController.collideWith(cat)) {
@@ -172,11 +149,9 @@ export function gameLoop(currentTime) {
         score.setHighScore();
     }
 
-    //Draw game objects
     table.draw();
     obstacleController.draw();
     cat.draw();
-    score.draw();
 
     if (gameOver) {
         showGameOver();
@@ -186,10 +161,38 @@ export function gameLoop(currentTime) {
         showStartGameText();
     }
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(startGame);
 }
 
-requestAnimationFrame(gameLoop);
+
+
+// export function gameLoop(currentTime) {
+//     if (previousTime === null) {
+//         previousTime = currentTime;
+//         requestAnimationFrame(gameLoop);
+//         return;
+//     }
+//     const frameTimeDelta = currentTime - previousTime;
+//     previousTime = currentTime;
+
+//     clearScreen();
+
+
+
+
+
+//     //Draw game objects
+//     table.draw();
+//     obstacleController.draw();
+//     cat.draw();
+//     score.draw();
+
+
+
+//     requestAnimationFrame(gameLoop);
+// }
+
+// requestAnimationFrame(gameLoop);
 
 window.addEventListener("keyup", reset, { once: true });
 window.addEventListener("touchstart", reset, { once: true });
