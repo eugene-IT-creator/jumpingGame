@@ -19,10 +19,10 @@ const TABLE_WIDTH = 2400;
 const TABLE_HEIGHT = 24;
 const OBSTACLE_SPEED = 0.5;
 const OBSTACLES = [
-    { width: 55 / 1.5, height: 70 / 1.5, image: "../images/glass.png" },
-    { width: 150 / 1.5, height: 100 / 1.5, image: "../images/laptop.png" },
-    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/laptop2.png" },
-    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/smartphones.png" },
+    { width: 55 / 1.5, height: 70 / 1.5, image: "../glass.png" },
+    { width: 150 / 1.5, height: 100 / 1.5, image: "../laptop.png" },
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../laptop2.png" },
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../smartphones.png" },
 ]
 
 let cat = null;
