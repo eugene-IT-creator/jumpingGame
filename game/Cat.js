@@ -17,7 +17,7 @@ export default class Cat {
         this.y = this.canvas.height - this.height - 1.5 * scaleRatio;
         this.yInitial = this.y;
         this.image = new Image();
-        this.image.src = "../images/meme-cat.png";
+        this.image.src = "images/meme-cat.png";
 
         window.removeEventListener("keydown", this.keyDown);
         window.removeEventListener("keyup", this.keyUp);
