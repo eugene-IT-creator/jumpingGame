@@ -88,9 +88,19 @@ function getScaleRatio() {
 }
 
 function showGameOver() {
-    const fontSize = 45 * scaleRatio;
+    const fontSize = 30 * scaleRatio;
     context.font = `${fontSize}px Calibri`;
     context.fillStyle = "#219ebc";
+    const x = canvas.width / 8;
+    const y = canvas.height / 3;
+    const lineheight = fontSize;
+
+    const gameOverText = "DEVICE DESTROYED! RUN AWAY!\n\nOr tap Screen or press Start to destroy more".split("\n");
+    for (var j = 0; j < gameOverText.length; j++) {
+        context.fillText(gameOverText[j], x, y + (j * lineheight));
+    }
+
+    ;
 }
 
 function setupGameReset() {
