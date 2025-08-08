@@ -7,8 +7,8 @@ import Score from "./Score.js";
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
 const FRAME_TIME = 16.67;
-const GAME_SPEED_INITIAL = 0.75;
-const SPEED_INCREMENT = 0.00001;
+const GAME_SPEED_INITIAL = 1;
+const SPEED_INCREMENT = 0.00002;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 200;
 const CAT_WIDTH = 88 / 1.5;
@@ -31,13 +31,12 @@ let obstacleController = null;
 let gameSpeed = GAME_SPEED_INITIAL;
 let score = null;
 
-let previousTime = null;
 let gameOver = false;
 let hasAddedEventListenersForRestart = false;
 let waitingToStart = true;
 
 function setScreenDimensions() {
-    scaleRatio = getScaleRation();
+    scaleRatio = getScaleRatio();
     canvas.height = GAME_HEIGHT * scaleRatio;
     canvas.width = GAME_WIDTH * scaleRatio;
 }
@@ -65,6 +64,8 @@ function createElements() {
     });
 
     obstacleController = new ObstacleController(context, obstacleImages, scaleRatio, OBSTACLE_SPEED);
+
+    score = new Score(context, scaleRatio);
 }
 
 export function setScreen() {
@@ -74,7 +75,7 @@ export function setScreen() {
 }
 
 
-function getScaleRation() {
+function getScaleRatio() {
     let screenHeight = window.innerHeight;
     let screenWidth = window.innerWidth;
 
@@ -85,25 +86,7 @@ function getScaleRation() {
     }
 }
 
-function clearScreen() {
-    context.fillStyle = "white";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-export function startGame() {
-    clearScreen();
-
-    table.update(gameSpeed, FRAME_TIME);
-    obstacleController.update(gameSpeed, FRAME_TIME);
-    cat.update(FRAME_TIME);
-
-    table.draw();
-    obstacleController.draw();
-    cat.draw();
-    requestAnimationFrame(startGame);
-}
-
-export function showGameOver() {
+function showGameOver() {
     const fontSize = 70 * scaleRatio;
     context.font = `${fontSize}px Verdana`;
     context.fillStyle = "black";
@@ -112,7 +95,7 @@ export function showGameOver() {
     context.fillText("GAME OVER", x, y);
 }
 
-export function setupGameReset() {
+function setupGameReset() {
     if (!hasAddedEventListenersForRestart) {
         hasAddedEventListenersForRestart = true;
 
@@ -123,7 +106,7 @@ export function setupGameReset() {
     }
 }
 
-function reset() {
+export function reset() {
     hasAddedEventListenersForRestart = false;
     gameOver = false;
     waitingToStart = false;
@@ -133,7 +116,7 @@ function reset() {
     gameSpeed = GAME_SPEED_INITIAL;
 }
 
-export function showStartGameText() {
+function showStartGameText() {
     const fontSize = 40 * scaleRatio;
     context.font = `${fontSize}px Verdana`;
     context.fillStyle = "black";
@@ -142,28 +125,24 @@ export function showStartGameText() {
     context.fillText("Tap Screen or Press Space To Start", x, y);
 }
 
-export function updateGameSpeed(frameTimeDelta) {
-    gameSpeed += frameTimeDelta * SPEED_INCREMENT;
+function updateGameSpeed(FRAME_TIME) {
+    gameSpeed += FRAME_TIME * SPEED_INCREMENT;
 }
 
-export function gameLoop(currentTime) {
-    if (previousTime === null) {
-        previousTime = currentTime;
-        requestAnimationFrame(gameLoop);
-        return;
-    }
-    const frameTimeDelta = currentTime - previousTime;
-    previousTime = currentTime;
+function clearScreen() {
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+}
 
+
+export function startGame() {
     clearScreen();
-
     if (!gameOver && !waitingToStart) {
-        //Update game objects
-        table.update(gameSpeed, frameTimeDelta);
-        obstacleController.update(gameSpeed, frameTimeDelta);
-        cat.update(gameSpeed, frameTimeDelta);
-        score.update(frameTimeDelta);
-        updateGameSpeed(frameTimeDelta);
+        table.update(gameSpeed, FRAME_TIME);
+        obstacleController.update(gameSpeed, FRAME_TIME);
+        cat.update(gameSpeed, FRAME_TIME);
+        score.update(FRAME_TIME);
+        updateGameSpeed(FRAME_TIME);
     }
 
     if (!gameOver && obstacleController.collideWith(cat)) {
@@ -172,7 +151,6 @@ export function gameLoop(currentTime) {
         score.setHighScore();
     }
 
-    //Draw game objects
     table.draw();
     obstacleController.draw();
     cat.draw();
@@ -186,10 +164,6 @@ export function gameLoop(currentTime) {
         showStartGameText();
     }
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(startGame);
 }
 
-requestAnimationFrame(gameLoop);
-
-window.addEventListener("keyup", reset, { once: true });
-window.addEventListener("touchstart", reset, { once: true });

@@ -2,8 +2,8 @@ export default class Cat {
     jumpPressed = false;
     jumping = false;
     falling = false;
-    JUMP_SPEED = 0.65;
-    GRAVITY = 0.3;
+    JUMP_SPEED = 16.25; 
+    GRAVITY = 7.5;
     constructor(context, height, width, minJumpHeight, maxJumpHeight, scaleRatio) {
         this.context = context;
         this.canvas = context.canvas;
@@ -15,7 +15,7 @@ export default class Cat {
 
         this.x = 10 * scaleRatio;
         this.y = this.canvas.height - this.height - 1.5 * scaleRatio;
-        this.yInitial = this.y; 
+        this.yInitial = this.y;
         this.image = new Image();
         this.image.src = "../images/meme-cat.png";
 

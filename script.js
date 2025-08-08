@@ -1,12 +1,11 @@
-import {gameLoop, setScreen, setupGameReset, showGameOver, showStartGameText, startGame} from "./game/mainGame.js";
+import {setScreen, startGame, reset} from "./game/mainGame.js";
 
 setScreen();
-showStartGameText();
-startGame();
+requestAnimationFrame(startGame);
 
-showGameOver();
-setupGameReset();
-gameLoop();
+window.addEventListener("keyup", reset, { once: true });
+window.addEventListener("touchstart", reset, { once: true });
+
 
 
 
