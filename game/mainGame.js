@@ -2,7 +2,7 @@ import { getBy } from "../helpers.js";
 import Cat from "./Cat.js";
 import Table from "./Table.js";
 import ObstacleController from "./ObstacleController.js";
-import Score from "./Score.js";
+//import Score from "./Score.js";
 
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
@@ -133,14 +133,14 @@ function updateGameSpeed(FRAME_TIME) {
 }
 
 export function startGame() {
+    
     clearScreen();
-
     if (!gameOver && !waitingToStart) {
         table.update(gameSpeed, FRAME_TIME);
         obstacleController.update(gameSpeed, FRAME_TIME);
         cat.update(gameSpeed, FRAME_TIME);
         //score.update(FRAME_TIME);
-        updateGameSpeed(FRAME_TIME);
+        //updateGameSpeed(FRAME_TIME);
     }
 
     if (!gameOver && obstacleController.collideWith(cat)) {

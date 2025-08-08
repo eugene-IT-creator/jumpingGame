@@ -15,7 +15,7 @@ export default class Cat {
 
         this.x = 10 * scaleRatio;
         this.y = this.canvas.height - this.height - 1.5 * scaleRatio;
-        this.yInitial = this.y; 
+        this.yInitial = this.y;
         this.image = new Image();
         this.image.src = "../images/meme-cat.png";
 
