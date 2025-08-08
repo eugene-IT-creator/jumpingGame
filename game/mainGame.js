@@ -64,6 +64,8 @@ function createElements() {
     });
 
     obstacleController = new ObstacleController(context, obstacleImages, scaleRatio, OBSTACLE_SPEED);
+
+    score = new Score(context, scaleRatio);
 }
 
 export function setScreen() {
@@ -110,7 +112,7 @@ export function reset() {
     waitingToStart = false;
     table.reset();
     obstacleController.reset();
-    //score.reset();
+    score.reset();
     gameSpeed = GAME_SPEED_INITIAL;
 }
 
@@ -134,26 +136,25 @@ function clearScreen() {
 
 
 export function startGame() {
-    console.log(gameSpeed);
-    
     clearScreen();
     if (!gameOver && !waitingToStart) {
         table.update(gameSpeed, FRAME_TIME);
         obstacleController.update(gameSpeed, FRAME_TIME);
         cat.update(gameSpeed, FRAME_TIME);
-        //score.update(FRAME_TIME);
+        score.update(FRAME_TIME);
         updateGameSpeed(FRAME_TIME);
     }
 
     if (!gameOver && obstacleController.collideWith(cat)) {
         gameOver = true;
         setupGameReset();
-        //score.setHighScore();
+        score.setHighScore();
     }
 
     table.draw();
     obstacleController.draw();
     cat.draw();
+    score.draw();
 
     if (gameOver) {
         showGameOver();

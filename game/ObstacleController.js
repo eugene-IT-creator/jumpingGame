@@ -21,7 +21,6 @@ export default class ObstacleController {
     setNextObstacleTime() {
         const randomNumber = this.generateRandomNumber(this.OBSTACLE_INTERVAL_MIN, this.OBSTACLE_INTERVAL_MAX);
         this.nextObstacleInterval = randomNumber;
-        console.log(this.nextObstacleInterval);
     }
     spawnObstacle() {
         const index = this.generateRandomNumber(0, this.obstacleImages.length - 1);
@@ -43,7 +42,6 @@ export default class ObstacleController {
         })
 
         this.obstacles = this.obstacles.filter((obstacle) => obstacle.x > -obstacle.width);
-        console.log(this.obstacles.length);
     }
 
     draw() {
