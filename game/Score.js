@@ -29,7 +29,7 @@ export default class Score {
 
         const fontSize = 20 * this.scaleRatio;
         this.context.font = `${fontSize}px serif`;
-        this.context.fillStyle = "#525250";
+        this.context.fillStyle = "#800723";
         const scoreX = this.canvas.width - 75 * this.scaleRatio;
         const highScoreX = scoreX - 125 * this.scaleRatio;
 
@@ -37,6 +37,6 @@ export default class Score {
         const highScorePadded = highScore.toString().padStart(6, 0);
 
         this.context.fillText(scorePadded, scoreX, y);
-        this.context.fillText(`HI ${highScorePadded}`, highScoreX, y);
+        this.context.fillText(`Score: ${highScorePadded}`, highScoreX, y);
     }
 }

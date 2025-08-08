@@ -21,7 +21,8 @@ const OBSTACLE_SPEED = 0.5;
 const OBSTACLES = [
     { width: 55 / 1.5, height: 70 / 1.5, image: "../images/glass.png" },
     { width: 150 / 1.5, height: 100 / 1.5, image: "../images/laptop.png" },
-    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/laptop2.png" }
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/laptop2.png" },
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/smartphones.png" },
 ]
 
 let cat = null;
@@ -87,12 +88,12 @@ function getScaleRatio() {
 }
 
 function showGameOver() {
-    const fontSize = 70 * scaleRatio;
-    context.font = `${fontSize}px Verdana`;
-    context.fillStyle = "black";
-    const x = canvas.width / 4.5;
+    const fontSize = 45 * scaleRatio;
+    context.font = `${fontSize}px Calibri`;
+    context.fillStyle = "#035365";
+    const x = canvas.width / 6;
     const y = canvas.height / 2;
-    context.fillText("GAME OVER", x, y);
+    context.fillText("DEVICE DESTROYED! Run away!", x, y);
 }
 
 function setupGameReset() {
@@ -117,12 +118,12 @@ export function reset() {
 }
 
 function showStartGameText() {
-    const fontSize = 40 * scaleRatio;
-    context.font = `${fontSize}px Verdana`;
-    context.fillStyle = "black";
+    const fontSize = 28 * scaleRatio;
+    context.font = `${fontSize}px Calibri`;
+    context.fillStyle = "#035365";
     const x = canvas.width / 14;
     const y = canvas.height / 2;
-    context.fillText("Tap Screen or Press Space To Start", x, y);
+    context.fillText("Isn't Branco in the room? Tap Screen or press Space to start!", x, y);
 }
 
 function updateGameSpeed(FRAME_TIME) {
