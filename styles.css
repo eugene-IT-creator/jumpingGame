@@ -1,15 +1,18 @@
 * {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 canvas {
-    border: 4px;
-    border-style: solid;
-    border-color: burlywood;
+    border: 4px solid burlywood;
+    opacity: 0.9;
 }
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #035365;
+    background-image: url("./images/background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
 }

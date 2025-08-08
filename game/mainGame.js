@@ -2,12 +2,13 @@ import { getBy } from "../helpers.js";
 import Cat from "./Cat.js";
 import Table from "./Table.js";
 import ObstacleController from "./ObstacleController.js";
+import Score from "./Score.js";
 
 const canvas = getBy("#game-container");
 const context = canvas.getContext("2d");
 const FRAME_TIME = 16.67;
-const GAME_SPEED_INITIAL = 0.75;
-const SPEED_INCREMENT = 0.00001;
+const GAME_SPEED_INITIAL = 0.9;
+const SPEED_INCREMENT = 0.00002;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 200;
 const CAT_WIDTH = 88 / 1.5;
@@ -20,7 +21,8 @@ const OBSTACLE_SPEED = 0.5;
 const OBSTACLES = [
     { width: 55 / 1.5, height: 70 / 1.5, image: "../images/glass.png" },
     { width: 150 / 1.5, height: 100 / 1.5, image: "../images/laptop.png" },
-    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/laptop2.png" }
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/laptop2.png" },
+    { width: 100 / 1.5, height: 100 / 1.5, image: "../images/smartphones.png" },
 ]
 
 let cat = null;
@@ -28,9 +30,14 @@ let scaleRatio = null;
 let table = null;
 let obstacleController = null;
 let gameSpeed = GAME_SPEED_INITIAL;
+let score = null;
+
+let gameOver = false;
+let hasAddedEventListenersForRestart = false;
+let waitingToStart = true;
 
 function setScreenDimensions() {
-    scaleRatio = getScaleRation();
+    scaleRatio = getScaleRatio();
     canvas.height = GAME_HEIGHT * scaleRatio;
     canvas.width = GAME_WIDTH * scaleRatio;
 }
@@ -58,6 +65,8 @@ function createElements() {
     });
 
     obstacleController = new ObstacleController(context, obstacleImages, scaleRatio, OBSTACLE_SPEED);
+
+    score = new Score(context, scaleRatio);
 }
 
 export function setScreen() {
@@ -67,7 +76,7 @@ export function setScreen() {
 }
 
 
-function getScaleRation() {
+function getScaleRatio() {
     let screenHeight = window.innerHeight;
     let screenWidth = window.innerWidth;
 
@@ -78,20 +87,84 @@ function getScaleRation() {
     }
 }
 
+function showGameOver() {
+    const fontSize = 45 * scaleRatio;
+    context.font = `${fontSize}px Calibri`;
+    context.fillStyle = "#035365";
+    const x = canvas.width / 6;
+    const y = canvas.height / 2;
+    context.fillText("DEVICE DESTROYED! Run away!", x, y);
+}
+
+function setupGameReset() {
+    if (!hasAddedEventListenersForRestart) {
+        hasAddedEventListenersForRestart = true;
+
+        setTimeout(() => {
+            window.addEventListener("keyup", reset, { once: true });
+            window.addEventListener("touchstart", reset, { once: true });
+        }, 1000);
+    }
+}
+
+export function reset() {
+    hasAddedEventListenersForRestart = false;
+    gameOver = false;
+    waitingToStart = false;
+    table.reset();
+    obstacleController.reset();
+    score.reset();
+    gameSpeed = GAME_SPEED_INITIAL;
+}
+
+function showStartGameText() {
+    const fontSize = 28 * scaleRatio;
+    context.font = `${fontSize}px Calibri`;
+    context.fillStyle = "#035365";
+    const x = canvas.width / 14;
+    const y = canvas.height / 2;
+    context.fillText("Isn't Branko in the room? Tap Screen or press Space to start!", x, y);
+}
+
+function updateGameSpeed(FRAME_TIME) {
+    gameSpeed += FRAME_TIME * SPEED_INCREMENT;
+}
+
 function clearScreen() {
     context.fillStyle = "white";
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+
 export function startGame() {
     clearScreen();
+    if (!gameOver && !waitingToStart) {
+        table.update(gameSpeed, FRAME_TIME);
+        obstacleController.update(gameSpeed, FRAME_TIME);
+        cat.update(gameSpeed, FRAME_TIME);
+        score.update(FRAME_TIME);
+        updateGameSpeed(FRAME_TIME);
+    }
 
-    table.update(gameSpeed, FRAME_TIME);
-    obstacleController.update(gameSpeed, FRAME_TIME);
-    cat.update(FRAME_TIME);
+    if (!gameOver && obstacleController.collideWith(cat)) {
+        gameOver = true;
+        setupGameReset();
+        score.setHighScore();
+    }
 
     table.draw();
     obstacleController.draw();
     cat.draw();
+    score.draw();
+
+    if (gameOver) {
+        showGameOver();
+    }
+
+    if (waitingToStart) {
+        showStartGameText();
+    }
+
     requestAnimationFrame(startGame);
 }
+

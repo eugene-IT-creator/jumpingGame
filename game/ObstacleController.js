@@ -1,7 +1,7 @@
 import Obstacle from "./Obstacle.js";
 export default class ObstacleController {
-    OBSTACLE_INTERVAL_MIN = 500;
-    OBSTACLE_INTERVAL_MAX = 2000;
+    OBSTACLE_INTERVAL_MIN = 800;
+    OBSTACLE_INTERVAL_MAX = 2500;
 
     nextObstacleInterval = null;
     obstacles = [];
@@ -21,7 +21,6 @@ export default class ObstacleController {
     setNextObstacleTime() {
         const randomNumber = this.generateRandomNumber(this.OBSTACLE_INTERVAL_MIN, this.OBSTACLE_INTERVAL_MAX);
         this.nextObstacleInterval = randomNumber;
-        console.log(this.nextObstacleInterval);
     }
     spawnObstacle() {
         const index = this.generateRandomNumber(0, this.obstacleImages.length - 1);
@@ -37,19 +36,25 @@ export default class ObstacleController {
             this.spawnObstacle();
             this.setNextObstacleTime();
         }
-
         this.nextObstacleInterval -= frameTime;
-        console.log(this.obstacles.length);
-
         this.obstacles.forEach((obstacle) => {
             obstacle.update(this.speed, gameSpeed, frameTime, this.scaleRatio);
         })
-        
+
+        this.obstacles = this.obstacles.filter((obstacle) => obstacle.x > -obstacle.width);
     }
 
     draw() {
         this.obstacles.forEach((obstacle) => {
             obstacle.draw();
         })
+    }
+
+    collideWith(sprite) {
+        return this.obstacles.some((obstacle) => obstacle.collideWith(sprite));
+    }
+
+    reset() {
+        this.obstacles = [];
     }
 }
