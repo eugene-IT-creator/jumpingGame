@@ -126,9 +126,14 @@ function showStartGameText() {
     const fontSize = 28 * scaleRatio;
     context.font = `${fontSize}px Calibri`;
     context.fillStyle = "#219ebc";
-    const x = canvas.width / 14;
-    const y = canvas.height / 2;
-    context.fillText("Isn't Branko in the room? Tap Screen or press Space to start!", x, y);
+    const x = canvas.width / 4;
+    const y = canvas.height / 2.5;
+    const lineheight = fontSize;
+
+    const gameStart = "Branko isn't in the room? TIME TO PLAY!\n\nTap screen / press Space to start!".split("\n");
+    for (var i = 0; i < gameStart.length; i++) {
+        context.fillText(gameStart[i], x, y + (i * lineheight));
+    }
 }
 
 function updateGameSpeed(FRAME_TIME) {
