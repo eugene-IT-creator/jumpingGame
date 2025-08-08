@@ -13,7 +13,7 @@ export default class Cat {
         this.maxJumpHeight = maxJumpHeight;
         this.scaleRatio = scaleRatio;
 
-        this.x = 10 * scaleRatio;
+        this.x = 30 * scaleRatio;
         this.y = this.canvas.height - this.height - 1.5 * scaleRatio;
         this.yInitial = this.y;
         this.image = new Image();
